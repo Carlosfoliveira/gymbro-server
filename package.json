@@ -17,6 +17,7 @@
     "@types/express": "^4.17.21",
     "@types/node": "^20.12.7",
     "nodemon": "^3.1.0",
+    "openapi-typescript": "^6.7.5",
     "prisma": "^5.12.1",
     "prisma-erd-generator": "^1.11.2",
     "typescript": "^5.4.5"
