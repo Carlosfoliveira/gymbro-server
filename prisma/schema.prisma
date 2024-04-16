@@ -9,3 +9,72 @@ datasource db {
   provider = "sqlite"
   url      = env("DATABASE_URL")
 }
+
+generator erd {
+  provider = "prisma-erd-generator"
+}
+
+model User {
+  id        String         @id @default(cuid())
+  email     String
+  password  String
+  name      String
+  lastname  String
+  gender    String?
+  address   String?
+  cellphone String?
+  createdAt DateTime       @default(now())
+  updatedAt DateTime       @default(now())
+  workout   Workout[]
+  invite    UsersInvites[]
+
+  @@unique([email, cellphone])
+}
+
+model Workout {
+  id        String   @id @default(cuid())
+  userId    String
+  name      String
+  trainType String
+  wod       String
+  date      DateTime
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id])
+
+  userInvites UsersInvites[]
+
+  @@unique([userId])
+}
+
+model UsersInvites {
+  id         String   @id @default(cuid())
+  userId     String
+  workoutId  String
+  acceptFlag Boolean  @default(false)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @default(now())
+  workout    Workout  @relation(fields: [workoutId], references: [id])
+  user       User     @relation(fields: [userId], references: [id])
+
+  @@unique([userId, workoutId])
+}
+
+// enum Muscles {
+//   CHEST
+//   BACK
+//   BICEPS
+//   TRICEPS
+//   SHOULDER
+//   ABDOMEN
+//   QUADRICEPS
+//   HAMSTRINGS
+//   CALF
+//   FOREARM
+//   GLUTES
+//   PULL
+//   PUSH
+//   CARDIO
+//   DELOAD
+//   RUNNING
+// }
